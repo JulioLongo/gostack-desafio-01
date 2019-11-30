@@ -1,7 +1,8 @@
 # 🚀 Desafio 1 - Node.js: Conceitos.
 
-Código do primeiro módulo do Bootcamp GoStack
-CRUD - Cread, Read, Update, Delete de um Array pré-definido através do acesso de rotas
+Desafio do primeiro módulo do Bootcamp GoStack.
+
+https://github.com/Rocketseat/bootcamp-gostack-desafio-01
 
 ## ☕ Instalação e execução
 
