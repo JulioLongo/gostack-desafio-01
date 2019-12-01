@@ -7,9 +7,21 @@ const port = 3000;
 let numberOfRequests = 0;
 const projects = [];
 
-//Middleware
+// Middleware Global para somar número de requests
+function totalRequest(req, res, next) {
+  numberOfRequests++;
+
+  console.log(`Número de requisições foi: ${numberOfRequests}`);
+
+  return next();
+}
+
+// Adicionaro middleware global
+server.use(totalRequest);
+
+// Middlewares 
+// Recebe id e procura se existe project dentro do array projects
 function checkProjectExists(req, res, next) {
-  //recebe id e verifica se ja existe project dentro do array projects
   const { id } = req.params;
   const project = projects.find(p => p.id == id);
 
@@ -20,8 +32,8 @@ function checkProjectExists(req, res, next) {
   return next();
 }
 
+// Recebe id e verifica se ja existe project dentro do array projects
 function checkCreateProjectExists(req, res, next) {
-  //recebe id e verifica se ja existe project dentro do array projects
   const { id } = req.body;
   const project = projects.find(p => p.id == id);
 
@@ -32,23 +44,13 @@ function checkCreateProjectExists(req, res, next) {
   return next();
 }
 
-function totalRequest(req, res, next) {
-  //soma toda vez que for chamado
-  numberOfRequests++;
-
-  console.log(`Número de requisições foi: ${numberOfRequests}`);
-
-  return next();
-}
-
-server.use(totalRequest);
-
+// Lista todos projetos e suas tarefas
 server.get("/projects", (req, res) => {
   return res.json(projects);
 });
 
+// Insere project dentro do array projects
 server.post("/projects", checkCreateProjectExists, (req, res) => {
-  //Inserir project dentro do array projects
   const { id, title } = req.body;
 
   const project = {
@@ -62,8 +64,8 @@ server.post("/projects", checkCreateProjectExists, (req, res) => {
   return res.json(project);
 });
 
+// Altera o titulo do projeto com base no ID
 server.put("/projects/:id", checkProjectExists, (req, res) => {
-  //
   const { id } = req.params;
   const { title } = req.body;
 
@@ -74,6 +76,7 @@ server.put("/projects/:id", checkProjectExists, (req, res) => {
   return res.json(project);
 });
 
+// Deleta o o projeto com base no ID
 server.delete("/projects/:id", checkProjectExists, (req, res) => {
   const { id } = req.params;
 
@@ -84,6 +87,7 @@ server.delete("/projects/:id", checkProjectExists, (req, res) => {
   return res.send();
 });
 
+// Cria o tarefas no projeto com base no ID
 server.post("/projects/:id/tasks", checkProjectExists, (req, res) => {
   const { id } = req.params;
   const { task } = req.body;
